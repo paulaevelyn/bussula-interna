@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bússola Interna — autoavaliação guiada para pessoas neurodivergentes" />
+  <title>Bússola Interna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --coral: #D96C63;
+      --coral-light: #f0a89f;
+      --coral-dark: #b85349;
+      --verde: #5E7D73;
+      --verde-light: #8aada5;
+      --verde-dark: #3d5c53;
+      --areia: #F5F0E8;
+      --areia-dark: #e8e1d3;
+      --grafite: #2E2E2E;
+      --grafite-light: #555;
+      --white: #ffffff;
+      --shadow: 0 2px 12px rgba(46,46,46,0.10);
+      --shadow-md: 0 4px 24px rgba(46,46,46,0.14);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font-title: 'Playfair Display', Georgia, serif;
+      --font-body: 'Lato', system-ui, sans-serif;
+      --transition: 200ms ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--areia);
+      color: var(--grafite);
+      line-height: 1.7;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: var(--font-title); line-height: 1.3; color: var(--grafite); }
+    h1 { font-size: clamp(1.75rem, 4vw, 2.4rem); font-weight: 700; }
+    h2 { font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 600; }
+    h3 { font-size: clamp(1.05rem, 2.5vw, 1.25rem); font-weight: 600; }
+    p { color: var(--grafite-light); }
+    a { color: var(--coral); }
+
+    .container { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+    .page { padding: 2rem 0 5rem; }
+
+    /* Crisis bar */
+    .crisis-bar {
+      background: var(--grafite); color: var(--white);
+      text-align: center; padding: 0.6rem 1rem; font-size: 0.875rem;
+    }
+    .crisis-bar button {
+      color: var(--coral-light); text-decoration: underline;
+      background: none; border: none; cursor: pointer;
+      font-size: inherit; font-family: inherit;
+    }
+
+    /* Nav */
+    .nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--areia-dark);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1.25rem; max-width: 780px; margin: 0 auto; gap: 1rem;
+    }
+    .nav-logo {
+      font-family: var(--font-title); font-size: 1.15rem; font-weight: 700;
+      color: var(--verde-dark); cursor: pointer;
+      background: none; border: none;
+    }
+    .nav-logo:hover { color: var(--coral); }
+    .nav-links { display: flex; gap: 0.25rem; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-link {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--font-body); font-size: 0.875rem;
+      color: var(--grafite-light); padding: 0.4rem 0.7rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition), color var(--transition);
+      white-space: nowrap;
+    }
+    .nav-link:hover, .nav-link.active { background: var(--areia); color: var(--verde-dark); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 1rem; font-weight: 700;
+      cursor: pointer; border: 2px solid transparent;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      text-decoration: none; letter-spacing: 0.01em;
+    }
+    .btn:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+    .btn-primary { background: var(--coral); color: var(--white); border-color: var(--coral); }
+    .btn-primary:hover { background: var(--coral-dark); border-color: var(--coral-dark); }
+    .btn-secondary { background: transparent; color: var(--verde-dark); border-color: var(--verde); }
+    .btn-secondary:hover { background: var(--verde); color: var(--white); }
+    .btn-ghost { background: transparent; color: var(--grafite-light); border-color: var(--areia-dark); }
+    .btn-ghost:hover { background: var(--areia-dark); }
+    .btn-sm { padding: 0.5rem 1.1rem; font-size: 0.9rem; }
+    .btn-lg { padding: 1rem 2.25rem; font-size: 1.1rem; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Card */
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem; box-shadow: var(--shadow);
+    }
+
+    /* Progress */
+    .progress-track {
+      height: 4px; background: var(--areia-dark); border-radius: 2px;
+      overflow: hidden; margin-bottom: 1.5rem;
+    }
+    .progress-fill { height: 100%; background: var(--verde); border-radius: 2px; transition: width 400ms ease; }
+
+    /* Answer buttons */
+    .answer-group { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.75rem; }
+    .answer-btn {
+      display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;
+      border-radius: var(--radius-sm); border: 2px solid var(--areia-dark);
+      background: var(--white); cursor: pointer;
+      font-family: var(--font-body); font-size: 1rem; color: var(--grafite);
+      text-align: left;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .answer-btn:hover { border-color: var(--verde); background: #f0f5f4; }
+    .answer-btn.sel-sim { border-color: var(--coral); background: #fdf2f1; }
+    .answer-btn.sel-nao { border-color: var(--verde); background: #f0f5f4; }
+    .answer-btn.sel-incerto { border-color: #b0a080; background: #faf8f3; }
+    .answer-btn:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+    .answer-icon {
+      width: 2rem; height: 2rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0; border: 2px solid currentColor;
+    }
+
+    /* Score bars */
+    .score-row { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
+    .score-bar-track { flex: 1; height: 8px; background: var(--areia-dark); border-radius: 4px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 4px; transition: width 600ms ease; }
+    .fill-s { background: #e07a30; }
+    .fill-a { background: #7060c0; }
+    .fill-d { background: var(--verde); }
+
+    /* State badges */
+    .state-badge {
+      display: inline-block; padding: 0.25rem 0.75rem;
+      border-radius: 999px; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .badge-s { background: #fde8d0; color: #a0521a; }
+    .badge-a { background: #e8e4f5; color: #5040a0; }
+    .badge-d { background: #d8eae6; color: #2d6b60; }
+
+    /* Resource items */
+    .resource-item {
+      background: var(--white); border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      font-size: 0.97rem; color: var(--grafite); line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+    .resource-note {
+      font-size: 0.875rem; color: var(--grafite-light); font-style: italic;
+      padding: 0.75rem 1rem; border-left: 3px solid var(--areia-dark);
+      margin-top: 0.5rem;
+    }
+
+    /* History */
+    .history-entry {
+      border-radius: var(--radius); background: var(--white);
+      padding: 1.25rem 1.5rem; box-shadow: var(--shadow); margin-bottom: 0.75rem;
+    }
+    .chart-area {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow-x: auto;
+    }
+
+    /* Report */
+    .report-preview {
+      background: var(--white); border: 1px solid var(--areia-dark);
+      border-radius: var(--radius); padding: 2rem; font-size: 0.9rem; line-height: 1.7;
+      margin-top: 1rem;
+    }
+    .report-entry { border-top: 1px solid var(--areia-dark); padding: 1rem 0; }
+
+    /* Overlay */
+    .overlay-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .overlay-box {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem; max-width: 480px; width: 100%; box-shadow: var(--shadow-md);
+    }
+    .crisis-number { font-size: 2rem; font-weight: 700; color: var(--coral); font-family: var(--font-title); display: block; margin: 0.5rem 0; }
+
+    /* Tabs */
+    .tab-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tab-btn { padding: 0.5rem 1.1rem; border-radius: var(--radius-sm); border: 2px solid; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; transition: background var(--transition), color var(--transition); }
+
+    /* Helpers */
+    .notice-box {
+      background: var(--areia-dark); border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--grafite-light);
+      border-left: 3px solid var(--verde); margin-bottom: 1.25rem;
+    }
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-sm { gap: 0.5rem; }
+    .gap-md { gap: 0.75rem; }
+    .gap-lg { gap: 1rem; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .small { font-size: 0.875rem; }
+    .dimmed { color: var(--grafite-light); opacity: 0.7; }
+    .italic { font-style: italic; }
+    .bold { font-weight: 700; }
+    .text-center { text-align: center; }
+    .hidden { display: none !important; }
+    .full-width { width: 100%; }
+    textarea {
+      width: 100%; min-height: 80px; padding: 0.75rem;
+      border: 2px solid var(--areia-dark); border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.95rem; resize: vertical;
+      background: var(--white); color: var(--grafite);
+    }
+    textarea:focus { outline: 2px solid var(--verde); }
+    input[type="checkbox"] { width: 1rem; height: 1rem; cursor: pointer; }
+
+    /* Print */
+    @media print {
+      .no-print, .crisis-bar, nav, .nav { display: none !important; }
+      body { background: #fff; color: #000; font-family: Georgia, serif; font-size: 11pt; }
+      .report-preview { border: none; padding: 0; box-shadow: none; }
+      h1, h2, h3 { color: #000; font-family: Georgia, serif; }
+      p { color: #222; }
+      .report-entry { page-break-inside: avoid; }
+      #app > *:not(#print-section) { display: none; }
+      #print-section { display: block !important; }
+    }
+
+    @media (max-width: 520px) {
+      .nav-inner { padding: 0.7rem 1rem; }
+      .nav-link { font-size: 0.8rem; padding: 0.35rem 0.55rem; }
+      .card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Nav -->
+  <div id="crisis-bar" class="crisis-bar">
+    Precisa de apoio agora? <button onclick="showCrisis()">Clique aqui — CVV 188</button>
+  </div>
+  <nav class="nav" aria-label="Navegação principal">
+    <div class="nav-inner">
+      <button class="nav-logo" onclick="navigate('home')" aria-label="Início">Bússola Interna</button>
+      <div class="nav-links">
+        <button class="nav-link" id="nav-home" onclick="navigate('home')">Início</button>
+        <button class="nav-link" id="nav-resources" onclick="navigate('resources')">Recursos</button>
+        <button class="nav-link" id="nav-history" onclick="navigate('history')">Histórico</button>
+        <button class="nav-link" id="nav-report" onclick="navigate('report')">Relatório</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Pages -->
+  <div id="page-home" class="page hidden"><div class="container"></div></div>
+  <div id="page-assessment" class="page hidden"><div class="container"></div></div>
+  <div id="page-result" class="page hidden"><div class="container"></div></div>
+  <div id="page-resources" class="page hidden"><div class="container"></div></div>
+  <div id="page-history" class="page hidden"><div class="container"></div></div>
+  <div id="page-report" class="page hidden"><div class="container"></div></div>
+
+  <!-- Crisis overlay placeholder -->
+  <div id="crisis-overlay" class="hidden"></div>
+
+  <!-- Print section (hidden until print) -->
+  <div id="print-section" class="hidden"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const STATES = { S: 'sensorial', A: 'ansiedade', D: 'depressao' };
+const STATE_LABELS = { sensorial: 'Sobrecarga Sensorial', ansiedade: 'Ansiedade', depressao: 'Depressão / Burnout' };
+const STATE_COLORS = { sensorial: '#e07a30', ansiedade: '#7060c0', depressao: '#5E7D73' };
+const STATE_FILL   = { sensorial: 'fill-s', ansiedade: 'fill-a', depressao: 'fill-d' };
+const STATE_BADGE  = { sensorial: 'badge-s', ansiedade: 'badge-a', depressao: 'badge-d' };
+const THRESHOLD = 3;
+
+const sensorialQ = [
+  { id:'s1', state:'sensorial', diff:false, text:'Senti vontade física de me afastar de um som, luz, cheiro, textura ou de um ambiente cheio de gente.' },
+  { id:'s2', state:'sensorial', diff:false, text:'Fiz ou senti vontade de fazer algum movimento repetitivo, balançar, apertar algo, tampar os ouvidos ou fechar os olhos.' },
+  { id:'s3', state:'sensorial', diff:false, text:'Fiquei em silêncio, sem conseguir falar, ou "desliguei" por um tempo, mesmo sem um motivo emocional claro.' },
+  { id:'s4', state:'sensorial', diff:false, text:'Reagi com irritação ou impaciência muito maior do que o estímulo parecia justificar.' },
+  { id:'s5', state:'sensorial', diff:false, text:'Havia mais de um estímulo ao mesmo tempo (som, luz e conversa, por exemplo) e senti que não conseguia processar tudo junto.' },
+  { id:'s6', state:'sensorial', diff:true,  text:'Esse desconforto melhorou, pelo menos um pouco, quando saí do ambiente, abaixei a luz ou o som, ou fiquei em silêncio.' },
+];
+const ansiedadeQ = [
+  { id:'a1', state:'ansiedade', diff:false, text:'Minha mente ficou repetindo um cenário que ainda não aconteceu, ou revivendo algo do passado, mesmo em um ambiente calmo.' },
+  { id:'a2', state:'ansiedade', diff:false, text:'Evitei começar uma tarefa que, em outro momento, eu conseguiria fazer sem dificuldade.' },
+  { id:'a3', state:'ansiedade', diff:false, text:'Senti uma tensão ou desconforto que não passou mesmo depois de sair da situação que pareceu causar isso.' },
+  { id:'a4', state:'ansiedade', diff:false, text:'Me peguei monitorando como estava sendo percebida(o) pelos outros, revendo frases ou reações.' },
+  { id:'a5', state:'ansiedade', diff:false, text:'Senti uma sensação de pânico crescente conforme um prazo ou compromisso se aproximava.' },
+  { id:'a6', state:'ansiedade', diff:true,  text:'Esse desconforto continuou mesmo sozinha(o), em silêncio, sem nenhum estímulo externo presente.' },
+];
+const depressaoQ = [
+  { id:'d1', state:'depressao', diff:false, note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Minha energia para tarefas do dia a dia caiu de forma constante, não só em um dia ruim isolado.' },
+  { id:'d2', state:'depressao', diff:false, note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Perdi o interesse em coisas que antes importavam ou davam prazer.' },
+  { id:'d3', state:'depressao', diff:false, note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Tarefas que antes exigiam esforço moderado começaram a parecer impossíveis de iniciar.' },
+  { id:'d4', state:'depressao', diff:false, note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Notei perda temporária de habilidades que antes eram automáticas (organização, fala fluente, autocuidado básico).' },
+  { id:'d5', state:'depressao', diff:false, note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Esse período veio depois de um tempo prolongado de sobre-esforço, mascaramento, ou de "dar conta de tudo sozinha(o)."' },
+  { id:'d6', state:'depressao', diff:true,  note:'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text:'Essa queda não melhorou com uma noite de sono boa, um fim de semana de descanso, ou a remoção de um único estímulo.' },
+];
+
+// Intercalated: S, A, D, S, A, D ...
+const QUESTIONS = [];
+for (let i = 0; i < 6; i++) {
+  QUESTIONS.push(sensorialQ[i], ansiedadeQ[i], depressaoQ[i]);
+}
+
+const RESOURCES = {
+  sensorial: {
+    intro: 'Primeiro reduza o estímulo — não tente uma técnica de regulação enquanto o estímulo ainda está presente.',
+    items: [
+      'Reduza o estímulo agora: abaixe a luz, abaixe ou corte o som, use fone com cancelamento de ruído ou protetor auricular, ou se afaste do ambiente por alguns minutos.',
+      'Dê-se permissão para sair sem precisar se explicar ou se justificar com ninguém.',
+      'Se algo sensorial costuma te ajudar — uma textura, um peso, um movimento repetitivo — use sem julgar a necessidade disso.',
+      'Espere o alívio acontecer, geralmente em minutos, antes de tentar voltar à tarefa ou ao ambiente.',
+    ],
+    note: 'Este não é o momento para técnicas de respiração guiada ou atenção plena. Primeiro reduza o estímulo; a regulação vem depois.',
+    warning: null,
+  },
+  ansiedade: {
+    intro: 'Antes de qualquer técnica, o que o sistema precisa é de segurança — não de convencimento.',
+    items: [
+      'Respiração de ritmo calmante: inspire contando até 4, expire contando até 6. Não precisa de silêncio total nem de uma postura específica.',
+      'Ancoragem no presente pelos sentidos: nomeie 3 coisas que você vê, 2 que você ouve, 1 que você sente tocando algo perto de você.',
+      'Nomeie o que o sistema está fazendo, sem tentar se convencer do contrário: "meu corpo está tentando me proteger de algo que ainda não aconteceu" — em vez de "não tem motivo para isso."',
+      'Experimente dizer para si mesma(o), em tom de voz gentil (não de comando): "isso vai passar" ou "estou em segurança agora."',
+    ],
+    note: null,
+    warning: null,
+  },
+  depressao: {
+    intro: 'Isso não se resolve com uma técnica de cinco minutos — e não é culpa sua.',
+    items: [
+      'Isso não é falta de esforço, disciplina ou organização. É o efeito de um sistema que sustentou demanda além da sua capacidade de recuperação.',
+      'Esta semana, veja se existe uma fonte de demanda ou de mascaramento que você pode reduzir, delegar ou simplificar — mesmo que pouco.',
+      'Buscar apoio importa: uma pessoa de confiança, um profissional de saúde mental, ou uma comunidade que entenda essa experiência.',
+    ],
+    note: null,
+    warning: 'Se os sinais persistirem por mais de algumas semanas, ou vierem acompanhados de desesperança, é importante conversar com um profissional. CVV: 188 (gratuito, 24h) · cvv.org.br',
+  },
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let appState = {
+  page: 'home',
+  qIndex: 0,
+  answers: {},        // { id: 'sim'|'nao'|'incerto' }
+  scores: null,       // { sensorial, ansiedade, depressao }
+  activeStates: [],
+  resourceTab: 'sensorial',
+  reportPeriod: 30,
+  reportSelected: {},
+  reportIntro: '',
+};
+
+// ─────────────────────────────────────────────
+// STORAGE
+// ─────────────────────────────────────────────
+const STORAGE_KEY = 'bussula_history';
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveEntry(entry) {
+  const h = loadHistory();
+  h.unshift(entry);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
+}
+
+function deleteEntry(id) {
+  const h = loadHistory().filter(e => e.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
+}
+
+function clearHistory() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function formatDate(iso) {
+  return new Date(iso).toLocaleString('pt-BR', {
+    day:'2-digit', month:'2-digit', year:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
+}
+
+// ─────────────────────────────────────────────
+// SCORING
+// ─────────────────────────────────────────────
+const ANS_VAL = { sim: 1, nao: 0, incerto: 0.5 };
+
+function computeScores(answers) {
+  const s = { sensorial: 0, ansiedade: 0, depressao: 0 };
+  for (const [id, ans] of Object.entries(answers)) {
+    const q = QUESTIONS.find(q => q.id === id);
+    if (q) s[q.state] += ANS_VAL[ans] || 0;
+  }
+  return s;
+}
+
+function getActiveStates(scores) {
+  return Object.entries(scores)
+    .filter(([,v]) => v >= THRESHOLD)
+    .sort(([,a],[,b]) => b - a)
+    .map(([k]) => k);
+}
+
+function getDiffId(state) {
+  return state === 'sensorial' ? 's6' : state === 'ansiedade' ? 'a6' : 'd6';
+}
+
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
+function navigate(page) {
+  appState.page = page;
+  document.querySelectorAll('.page').forEach(el => el.classList.add('hidden'));
+  document.getElementById('page-' + page).classList.remove('hidden');
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (page === 'home') renderHome();
+  else if (page === 'assessment') renderAssessment();
+  else if (page === 'result') renderResult();
+  else if (page === 'resources') renderResources();
+  else if (page === 'history') renderHistory();
+  else if (page === 'report') renderReport();
+}
+
+function getContainer(page) {
+  return document.querySelector('#page-' + page + ' .container');
+}
+
+// ─────────────────────────────────────────────
+// CRISIS OVERLAY
+// ─────────────────────────────────────────────
+function showCrisis() {
+  const el = document.getElementById('crisis-overlay');
+  el.classList.remove('hidden');
+  el.innerHTML = `
+    <div class="overlay-backdrop" onclick="if(event.target===this)hideCrisis()" role="dialog" aria-modal="true" aria-labelledby="crisis-title">
+      <div class="overlay-box">
+        <h2 id="crisis-title" style="margin-bottom:1rem">Precisa de apoio agora?</h2>
+        <p style="margin-bottom:0.75rem">Se você estiver em sofrimento intenso ou pensando em se machucar, fale com alguém agora:</p>
+        <p style="margin-bottom:0.75rem">
+          <strong>CVV — Centro de Valorização da Vida</strong>
+          <span class="crisis-number">188</span>
+          Ligação gratuita, 24 horas, 7 dias por semana.<br>
+          <a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer">cvv.org.br</a> para atendimento por chat.
+        </p>
+        <p style="margin-bottom:0.75rem">
+          <strong>CAPS ou UBS mais próxima</strong><br>
+          Em emergências, vá ao pronto-socorro ou ligue <strong>192 (SAMU)</strong>.
+        </p>
+        <p class="small dimmed" style="margin-top:1rem">Este app não avalia risco de forma ativa. Em caso de dúvida, busque ajuda humana.</p>
+        <button class="btn btn-ghost btn-sm" style="margin-top:1.25rem" onclick="hideCrisis()">Fechar</button>
+      </div>
+    </div>`;
+  el.querySelector('button').focus();
+  document.addEventListener('keydown', onCrisisKey);
+}
+
+function hideCrisis() {
+  document.getElementById('crisis-overlay').classList.add('hidden');
+  document.getElementById('crisis-overlay').innerHTML = '';
+  document.removeEventListener('keydown', onCrisisKey);
+}
+
+function onCrisisKey(e) { if (e.key === 'Escape') hideCrisis(); }
+
+// ─────────────────────────────────────────────
+// HOME
+// ─────────────────────────────────────────────
+function renderHome() {
+  getContainer('home').innerHTML = `
+    <div class="card" style="max-width:560px;margin:0 auto">
+      <h1 style="margin-bottom:1.25rem">Bússola Interna</h1>
+      <p style="margin-bottom:1rem;color:var(--grafite)">
+        Este app ajuda você a identificar o que pode estar acontecendo no seu sistema nervoso agora — sem precisar saber de antemão o que você está sentindo.
+      </p>
+      <p style="margin-bottom:1rem">
+        Para muitas pessoas neurodivergentes, perceber o próprio estado interno não é simples. Em vez de perguntar "como você se sente", este app pergunta sobre <strong>sinais concretos</strong>: o que aconteceu no seu corpo, no seu comportamento, no seu contexto.
+      </p>
+      <p style="margin-bottom:1rem">
+        São 18 perguntas, uma de cada vez. Você pode responder no seu ritmo, pausar, voltar ou sair sem perder o progresso da sessão.
+      </p>
+      <p style="margin-bottom:2rem">
+        <strong>Importante:</strong> os resultados não são diagnóstico. São uma leitura dos sinais que você notou — um ponto de partida para entender o que pode estar acontecendo.
+      </p>
+      <div class="notice-box" role="note">
+        🔒 Seus registros ficam só neste dispositivo. Nenhum dado é enviado para servidores ou terceiros.
+      </div>
+      <button class="btn btn-primary btn-lg full-width" onclick="startAssessment()">
+        Começar autoavaliação
+      </button>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+// ASSESSMENT
+// ─────────────────────────────────────────────
+function startAssessment() {
+  appState.qIndex = 0;
+  appState.answers = {};
+  navigate('assessment');
+}
+
+function renderAssessment() {
+  const i = appState.qIndex;
+  const q = QUESTIONS[i];
+  const total = QUESTIONS.length;
+  const pct = Math.round((i / total) * 100);
+  const sel = appState.answers[q.id] || null;
+  const isLast = i === total - 1;
+
+  const answers = [
+    { value:'sim',     label:'Sim',              icon:'✓', cls:'sel-sim' },
+    { value:'incerto', label:'Não tenho certeza', icon:'~', cls:'sel-incerto' },
+    { value:'nao',     label:'Não',              icon:'✕', cls:'sel-nao' },
+  ];
+
+  getContainer('assessment').innerHTML = `
+    <div role="progressbar" aria-valuenow="${i+1}" aria-valuemin="1" aria-valuemax="${total}" aria-label="Pergunta ${i+1} de ${total}" class="progress-track">
+      <div class="progress-fill" style="width:${pct}%"></div>
+    </div>
+    <p class="small dimmed" style="margin-bottom:0.5rem">Pergunta ${i+1} de ${total}</p>
+    <div class="card">
+      ${q.note ? `<div class="notice-box" style="margin-bottom:1.25rem;font-size:0.875rem">${q.note}</div>` : ''}
+      <h2 id="qtext" style="font-size:clamp(1.1rem,3vw,1.35rem);line-height:1.5;color:var(--grafite);margin-bottom:0.25rem">${q.text}</h2>
+      <div class="answer-group" role="group" aria-labelledby="qtext">
+        ${answers.map(a => `
+          <button class="answer-btn${sel === a.value ? ' ' + a.cls : ''}"
+            aria-pressed="${sel === a.value}"
+            onclick="selectAnswer('${a.value}')">
+            <span class="answer-icon" style="color:${sel===a.value ? (a.value==='sim'?'var(--coral)':a.value==='nao'?'var(--verde)':'#a09060') : 'var(--grafite-light)'}" aria-hidden="true">${a.icon}</span>
+            <span>${a.label}</span>
+          </button>`).join('')}
+      </div>
+      ${sel === 'incerto' ? '<p class="small italic" style="color:var(--grafite-light);margin-top:0.75rem">"Não tenho certeza" é uma resposta válida — vale tanto quanto as outras.</p>' : ''}
+    </div>
+    <div class="flex gap-md" style="margin-top:1.25rem;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="assessBack()">← ${i===0?'Sair':'Voltar'}</button>
+      <button class="btn btn-primary" id="btn-next" style="flex:1" onclick="assessNext()" ${!sel?'disabled':''}>
+        ${isLast ? 'Ver resultado' : 'Próxima →'}
+      </button>
+    </div>`;
+}
+
+function selectAnswer(value) {
+  const q = QUESTIONS[appState.qIndex];
+  appState.answers[q.id] = value;
+  renderAssessment();
+}
+
+function assessNext() {
+  const i = appState.qIndex;
+  const q = QUESTIONS[i];
+  if (!appState.answers[q.id]) return;
+
+  if (i === QUESTIONS.length - 1) {
+    const scores = computeScores(appState.answers);
+    appState.scores = scores;
+    appState.activeStates = getActiveStates(scores);
+    navigate('result');
+  } else {
+    appState.qIndex++;
+    renderAssessment();
+  }
+}
+
+function assessBack() {
+  if (appState.qIndex === 0) { navigate('home'); return; }
+  appState.qIndex--;
+  renderAssessment();
+}
+
+// ─────────────────────────────────────────────
+// RESULT
+// ─────────────────────────────────────────────
+function renderResult() {
+  const { scores, answers, activeStates } = appState;
+  const allStates = ['sensorial','ansiedade','depressao'];
+
+  let diffNotes = '';
+  activeStates.forEach(state => {
+    const diffId = getDiffId(state);
+    if (answers[diffId] === 'sim') {
+      const notes = {
+        sensorial: 'O que reforça sobrecarga sensorial: o desconforto aliviou quando você reduziu o estímulo — isso é um sinal típico de sobrecarga, que tende a responder rápido à mudança de ambiente.',
+        ansiedade: 'O que reforça ansiedade: o desconforto persistiu mesmo sozinha(o), fora do estímulo — isso é típico de ansiedade, que não se resolve apenas saindo do ambiente.',
+        depressao: 'O que reforça burnout/depressão: a queda de energia não melhorou com descanso pontual — isso é diferente de cansaço comum, que geralmente melhora com uma boa noite de sono.',
+      };
+      diffNotes += `<p class="resource-note" style="margin-bottom:0.5rem">${notes[state]}</p>`;
+    }
+  });
+
+  const stateDescriptions = {
+    sensorial: 'Os sinais que você notou são mais compatíveis com sobrecarga sensorial — o sistema nervoso respondendo a um excesso de estímulo.',
+    ansiedade: 'Os sinais que você notou são mais compatíveis com ansiedade — o sistema em estado de alerta mesmo fora do gatilho.',
+    depressao: 'Os sinais que você notou são mais compatíveis com burnout ou depressão neurodivergente — esgotamento que não se resolve com descanso pontual.',
+  };
+
+  let html = `
+    <h1 style="margin-bottom:0.35rem">Resultado</h1>
+    <p class="small dimmed" style="margin-bottom:1.75rem">Baseado nos sinais que você notou, isso é o que apareceu com mais força agora.</p>`;
+
+  if (activeStates.length === 0) {
+    html += `<div class="card">
+      <h2 style="margin-bottom:1rem">Nenhum estado em primeiro plano</h2>
+      <p>Pelos sinais que você notou agora, nenhum dos três estados parece estar em primeiro plano.</p>
+      <p style="margin-top:0.75rem">Isso não significa que está tudo bem ou que você precisa continuar performando — só que, neste momento, talvez o que você sentiu não se encaixe nessas três categorias. Você pode revisitar isso quando quiser.</p>
+    </div>`;
+  } else {
+    if (activeStates.length > 1) {
+      html += `<div class="card" style="margin-bottom:1.25rem">
+        <p>Esses estados costumam coexistir e se alimentar: sobrecarga sensorial repetida sem recuperação deixa o sistema nervoso em alerta constante, o que pode alimentar ansiedade. Com o tempo, sustentar esse nível de esforço sem descanso adequado pode contribuir para burnout ou depressão.</p>
+      </div>`;
+    }
+
+    allStates.forEach(state => {
+      const score = scores[state] || 0;
+      const isActive = activeStates.includes(state);
+      const pct = Math.round((score / 6) * 100);
+      html += `
+        <div class="card" style="border-left:4px solid ${STATE_COLORS[state]};margin-bottom:1rem;opacity:${isActive?1:0.5}"
+          aria-label="${STATE_LABELS[state]}: ${score} de 6 pontos${isActive?' — presente':''}">
+          <div class="flex items-center justify-between" style="margin-bottom:0.75rem;gap:0.5rem">
+            <h3 style="color:${STATE_COLORS[state]}">${STATE_LABELS[state]}</h3>
+            <span class="small dimmed">${score}/6 pontos</span>
+          </div>
+          <div class="score-row">
+            <div class="score-bar-track">
+              <div class="score-bar-fill ${STATE_FILL[state]}" style="width:${pct}%"></div>
+            </div>
+            <span class="small bold" style="color:${STATE_COLORS[state]};min-width:36px;text-align:right">${pct}%</span>
+          </div>
+          ${isActive ? `<p class="small" style="margin-top:0.5rem;color:var(--grafite)">${stateDescriptions[state]}</p>` : ''}
+        </div>`;
+    });
+
+    if (diffNotes) {
+      html += `<div class="card" style="margin-bottom:1rem">
+        <h3 style="margin-bottom:0.75rem;font-size:1rem">O que reforçou esses sinais</h3>
+        ${diffNotes}
+      </div>`;
+    }
+  }
+
+  // Save block
+  html += `
+    <div class="card" style="margin-top:1.25rem" id="save-block">
+      <h3 style="margin-bottom:0.5rem;font-size:1rem">Registrar esta avaliação (opcional)</h3>
+      <p class="small dimmed" style="margin-bottom:0.75rem">Você pode adicionar uma nota de contexto. O registro fica salvo só neste dispositivo.</p>
+      <textarea id="result-note" placeholder="O que estava acontecendo hoje? (opcional)" aria-label="Nota de contexto"></textarea>
+      <button class="btn btn-secondary btn-sm" style="margin-top:0.75rem" id="btn-save" onclick="saveResult()">Salvar no histórico</button>
+    </div>
+    <div class="flex flex-wrap gap-md" style="margin-top:1.5rem">
+      ${activeStates.length > 0 ? `<button class="btn btn-primary" onclick="navigate('resources')">Ver recursos de regulação</button>` : ''}
+      <button class="btn btn-ghost" onclick="navigate('history')">Ver histórico</button>
+      <button class="btn btn-ghost" onclick="startAssessment()">Nova avaliação</button>
+    </div>`;
+
+  getContainer('result').innerHTML = html;
+}
+
+function saveResult() {
+  const note = document.getElementById('result-note')?.value || '';
+  const entry = {
+    id: Date.now().toString(),
+    timestamp: new Date().toISOString(),
+    scores: appState.scores,
+    answers: appState.answers,
+    note,
+  };
+  saveEntry(entry);
+  const btn = document.getElementById('btn-save');
+  if (btn) { btn.textContent = '✓ Salvo no histórico'; btn.disabled = true; }
+  const ta = document.getElementById('result-note');
+  if (ta) ta.disabled = true;
+}
+
+// ─────────────────────────────────────────────
+// RESOURCES
+// ─────────────────────────────────────────────
+function renderResources() {
+  if (!appState.resourceTab) appState.resourceTab = 'sensorial';
+  const tab = appState.resourceTab;
+  const res = RESOURCES[tab];
+  const hl = appState.activeStates;
+
+  const tabs = [
+    { id:'sensorial', label:'Sobrecarga Sensorial', color:'#e07a30' },
+    { id:'ansiedade', label:'Ansiedade', color:'#7060c0' },
+    { id:'depressao', label:'Burnout / Depressão', color:'#5E7D73' },
+  ];
+
+  let html = `
+    <h1 style="margin-bottom:0.35rem">Recursos de regulação</h1>
+    <p class="small dimmed" style="margin-bottom:1.75rem">
+      Você pode navegar entre os estados abaixo a qualquer momento — não é necessário ter feito a autoavaliação.
+    </p>
+    <div class="tab-bar" role="tablist">
+      ${tabs.map(t => `
+        <button class="tab-btn" role="tab" aria-selected="${tab===t.id}"
+          style="background:${tab===t.id?t.color:'var(--white)'};color:${tab===t.id?'var(--white)':t.color};border-color:${t.color};font-weight:${hl.includes(t.id)?700:400}"
+          onclick="setResourceTab('${t.id}')">
+          ${hl.includes(t.id) ? '● ' : ''}${t.label}
+        </button>`).join('')}
+    </div>
+    <div id="resource-panel" role="tabpanel">
+      <h2 style="color:${tabs.find(t=>t.id===tab).color};margin-bottom:0.5rem">${STATE_LABELS[tab]}</h2>
+      <p style="margin-bottom:1.25rem;color:var(--grafite)">${res.intro}</p>
+      ${res.items.map(item => `<div class="resource-item">${item}</div>`).join('')}
+      ${res.warning ? `
+        <div class="card" style="margin-top:1rem;border-left:4px solid var(--coral);background:#fdf2f1">
+          <p style="color:var(--grafite)">${res.warning}</p>
+        </div>` : ''}
+      ${res.note ? `<p class="resource-note" style="margin-top:1rem">${res.note}</p>` : ''}
+    </div>`;
+
+  getContainer('resources').innerHTML = html;
+}
+
+function setResourceTab(tab) {
+  appState.resourceTab = tab;
+  renderResources();
+}
+
+// ─────────────────────────────────────────────
+// HISTORY
+// ─────────────────────────────────────────────
+function renderHistory() {
+  const history = loadHistory();
+  let html = `
+    <div class="flex items-center justify-between flex-wrap gap-md" style="margin-bottom:0.5rem">
+      <h1>Histórico</h1>
+      ${history.length > 0 ? `<button class="btn btn-ghost btn-sm" onclick="confirmClearHistory()">Limpar tudo</button>` : ''}
+    </div>
+    <p class="small dimmed" style="margin-bottom:1.75rem">
+      Isso pode ajudar você — e seu terapeuta, se você tiver um — a notar padrões e gatilhos recorrentes.
+    </p>`;
+
+  if (history.length === 0) {
+    html += `<div class="card text-center">
+      <p>Nenhuma avaliação salva ainda.</p>
+      <p class="small dimmed mt-1">Após concluir e salvar uma autoavaliação, ela aparece aqui.</p>
+    </div>`;
+  } else {
+    html += buildMiniChart(history);
+    html += `<div aria-label="Lista de avaliações salvas">`;
+    history.forEach(entry => {
+      const active = getActiveStates(entry.scores || {});
+      html += `
+        <div class="history-entry">
+          <div class="flex justify-between items-center flex-wrap gap-sm">
+            <span class="small dimmed">${formatDate(entry.timestamp)}</span>
+            <button class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:0.25rem 0.6rem"
+              aria-label="Excluir registro de ${formatDate(entry.timestamp)}"
+              onclick="deleteHistoryEntry('${entry.id}')">Excluir</button>
+          </div>
+          <div class="flex flex-wrap gap-md" style="margin:0.5rem 0">
+            ${['sensorial','ansiedade','depressao'].map(s =>
+              `<span class="small" style="color:${STATE_COLORS[s]}">${STATE_LABELS[s]}: ${(entry.scores?.[s]||0).toFixed(1)}/6</span>`
+            ).join('')}
+          </div>
+          ${active.length > 0 ? `<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem">
+            ${active.map(s => `<span class="state-badge ${STATE_BADGE[s]}">${STATE_LABELS[s]}</span>`).join('')}
+          </div>` : ''}
+          ${entry.note ? `<p class="small italic" style="margin-top:0.6rem;color:var(--grafite-light)">"${entry.note}"</p>` : ''}
+        </div>`;
+    });
+    html += '</div>';
+  }
+
+  getContainer('history').innerHTML = html;
+}
+
+function buildMiniChart(history) {
+  if (history.length < 2) return '';
+  const W = 500, H = 140, PAD = 32;
+  const points = [...history].reverse().slice(0, 20);
+  const n = points.length;
+  const xStep = (W - PAD * 2) / Math.max(n - 1, 1);
+  const x = i => PAD + i * xStep;
+  const y = v => H - PAD - (v / 6) * (H - PAD * 2);
+  const states = ['sensorial','ansiedade','depressao'];
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" aria-hidden="true">`;
+  [0,3,6].forEach(v => {
+    svg += `<line x1="${PAD}" y1="${y(v)}" x2="${W-PAD}" y2="${y(v)}" stroke="#e8e1d3" stroke-width="1"/>`;
+    svg += `<text x="${PAD-6}" y="${y(v)+4}" text-anchor="end" font-size="10" fill="#999">${v}</text>`;
+  });
+  svg += `<line x1="${PAD}" y1="${y(THRESHOLD)}" x2="${W-PAD}" y2="${y(THRESHOLD)}" stroke="#ccc" stroke-dasharray="4 3" stroke-width="1.5"/>`;
+
+  states.forEach(state => {
+    const d = points.map((p,i) => `${i===0?'M':'L'}${x(i)},${y(p.scores?.[state]||0)}`).join(' ');
+    svg += `<path d="${d}" fill="none" stroke="${STATE_COLORS[state]}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    points.forEach((p,i) => {
+      svg += `<circle cx="${x(i)}" cy="${y(p.scores?.[state]||0)}" r="3.5" fill="${STATE_COLORS[state]}"/>`;
+    });
+  });
+  svg += '</svg>';
+
+  const legend = states.map(s =>
+    `<span class="small flex items-center" style="gap:0.4rem">
+      <span style="width:16px;height:3px;background:${STATE_COLORS[s]};border-radius:2px;display:inline-block"></span>
+      ${STATE_LABELS[s]}
+    </span>`
+  ).join('');
+
+  return `<div class="chart-area" role="img" aria-label="Gráfico de pontuações ao longo do tempo">
+    <h3 style="margin-bottom:1rem;font-size:1rem">Pontuações ao longo do tempo</h3>
+    ${svg}
+    <div class="flex flex-wrap gap-lg" style="margin-top:0.75rem">${legend}<span class="small dimmed">— — limiar (3)</span></div>
+  </div>`;
+}
+
+function deleteHistoryEntry(id) {
+  deleteEntry(id);
+  renderHistory();
+}
+
+function confirmClearHistory() {
+  if (confirm('Apagar todo o histórico? Esta ação não pode ser desfeita.')) {
+    clearHistory();
+    renderHistory();
+  }
+}
+
+// ─────────────────────────────────────────────
+// REPORT
+// ─────────────────────────────────────────────
+function renderReport() {
+  const history = loadHistory();
+  const PERIODS = [
+    { label:'Últimos 7 dias', days:7 },
+    { label:'Últimos 30 dias', days:30 },
+    { label:'Todo o histórico', days:null },
+  ];
+  const pIdx = appState.reportPeriodIdx ?? 1;
+  const period = PERIODS[pIdx];
+  const cutoff = period.days ? Date.now() - period.days * 86400000 : 0;
+  const filtered = history.filter(e => !period.days || new Date(e.timestamp).getTime() > cutoff);
+
+  if (!appState.reportSelected) appState.reportSelected = {};
+  filtered.forEach(e => {
+    if (appState.reportSelected[e.id] === undefined) appState.reportSelected[e.id] = true;
+  });
+
+  const included = filtered.filter(e => appState.reportSelected[e.id]);
+  const stateCounts = {};
+  ['sensorial','ansiedade','depressao'].forEach(s => {
+    stateCounts[s] = included.filter(e => (e.scores?.[s]||0) >= THRESHOLD).length;
+  });
+
+  let html = `
+    <h1 style="margin-bottom:0.35rem">Relatório para o profissional</h1>
+    <p class="small dimmed" style="margin-bottom:1.75rem">
+      Transforme seus registros em um documento legível para quem te acompanha. Você controla o que é incluído antes de exportar.
+    </p>`;
+
+  if (history.length === 0) {
+    html += `<div class="card text-center">
+      <p>Nenhuma avaliação salva ainda.</p>
+      <p class="small dimmed mt-1">Complete e salve ao menos uma autoavaliação para gerar um relatório.</p>
+    </div>`;
+    getContainer('report').innerHTML = html;
+    return;
+  }
+
+  html += `
+    <!-- Period -->
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="margin-bottom:0.75rem;font-size:1rem">Período</h3>
+      <div class="flex flex-wrap gap-sm">
+        ${PERIODS.map((p,i) => `<button class="btn btn-sm ${pIdx===i?'btn-primary':'btn-ghost'}" aria-pressed="${pIdx===i}" onclick="setReportPeriod(${i})">${p.label}</button>`).join('')}
+      </div>
+    </div>
+
+    <!-- Intro message -->
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="margin-bottom:0.5rem;font-size:1rem">Mensagem para o profissional (opcional)</h3>
+      <textarea id="report-intro" placeholder="Queria comentar sobre essa semana específica…" aria-label="Mensagem opcional">${appState.reportIntro||''}</textarea>
+    </div>
+
+    <!-- Entry selection -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="flex justify-between items-center flex-wrap gap-sm" style="margin-bottom:0.75rem">
+        <h3 style="font-size:1rem">Avaliações do período (${filtered.length} encontradas)</h3>
+        <div class="flex gap-sm">
+          <button class="btn btn-ghost btn-sm" onclick="reportSelectAll()">Todas</button>
+          <button class="btn btn-ghost btn-sm" onclick="reportDeselectAll()">Nenhuma</button>
+        </div>
+      </div>
+      ${filtered.length === 0
+        ? '<p class="small dimmed">Nenhuma avaliação neste período.</p>'
+        : filtered.map(entry => {
+            const active = getActiveStates(entry.scores||{});
+            const isChecked = !!appState.reportSelected[entry.id];
+            return `<label style="display:flex;gap:0.75rem;align-items:flex-start;padding:0.75rem;border-radius:var(--radius-sm);border:1px solid var(--areia-dark);cursor:pointer;background:${isChecked?'var(--areia)':'var(--white)'};margin-bottom:0.5rem">
+              <input type="checkbox" ${isChecked?'checked':''} onchange="toggleReportEntry('${entry.id}')" aria-label="Incluir avaliação de ${formatDate(entry.timestamp)}" style="margin-top:2px;flex-shrink:0">
+              <div>
+                <span class="small dimmed">${formatDate(entry.timestamp)}</span>
+                ${active.length > 0
+                  ? `<div style="display:flex;gap:0.4rem;margin-top:0.3rem;flex-wrap:wrap">${active.map(s=>`<span class="small bold" style="color:${STATE_COLORS[s]}">${STATE_LABELS[s]} (${entry.scores?.[s]||0}/6)</span>`).join('')}</div>`
+                  : '<span class="small dimmed" style="display:block;margin-top:0.2rem">Nenhum estado acima do limiar</span>'}
+              </div>
+            </label>`;
+          }).join('')
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap gap-md no-print" style="margin-bottom:1rem" id="report-actions">
+      <button class="btn btn-secondary" ${included.length===0?'disabled':''} onclick="toggleReportPreview()">Visualizar relatório</button>
+      <button class="btn btn-primary" ${included.length===0?'disabled':''} onclick="printReport()">Exportar como PDF</button>
+      <button class="btn btn-ghost" ${included.length===0?'disabled':''} onclick="copyReportText()">Copiar texto</button>
+    </div>
+    ${included.length===0 ? '<p class="small dimmed" style="margin-bottom:1rem">Selecione ao menos uma avaliação para exportar.</p>' : ''}
+
+    <div id="report-preview-area"></div>`;
+
+  getContainer('report').innerHTML = html;
+}
+
+function setReportPeriod(idx) {
+  appState.reportPeriodIdx = idx;
+  appState.reportSelected = {};
+  renderReport();
+}
+
+function toggleReportEntry(id) {
+  appState.reportSelected[id] = !appState.reportSelected[id];
+  const intro = document.getElementById('report-intro');
+  if (intro) appState.reportIntro = intro.value;
+  renderReport();
+}
+
+function reportSelectAll() {
+  const history = loadHistory();
+  history.forEach(e => { appState.reportSelected[e.id] = true; });
+  renderReport();
+}
+
+function reportDeselectAll() {
+  const history = loadHistory();
+  history.forEach(e => { appState.reportSelected[e.id] = false; });
+  renderReport();
+}
+
+function toggleReportPreview() {
+  const area = document.getElementById('report-preview-area');
+  if (!area) return;
+  const intro = document.getElementById('report-intro');
+  if (intro) appState.reportIntro = intro.value;
+  if (area.innerHTML.trim()) { area.innerHTML = ''; return; }
+  area.innerHTML = buildReportHTML();
+}
+
+function buildReportHTML() {
+  const history = loadHistory();
+  const PERIODS = [
+    { label:'Últimos 7 dias', days:7 },
+    { label:'Últimos 30 dias', days:30 },
+    { label:'Todo o histórico', days:null },
+  ];
+  const pIdx = appState.reportPeriodIdx ?? 1;
+  const period = PERIODS[pIdx];
+  const cutoff = period.days ? Date.now() - period.days * 86400000 : 0;
+  const filtered = history.filter(e => !period.days || new Date(e.timestamp).getTime() > cutoff);
+  const included = filtered.filter(e => appState.reportSelected[e.id]);
+
+  const stateCounts = {};
+  ['sensorial','ansiedade','depressao'].forEach(s => {
+    stateCounts[s] = included.filter(e => (e.scores?.[s]||0) >= THRESHOLD).length;
+  });
+
+  const intro = appState.reportIntro || '';
+
+  let html = `<div class="report-preview" id="report-content">
+    <h2 style="margin-bottom:0.25rem">Bússola Interna — Relatório de Autoavaliação</h2>
+    <p class="small dimmed" style="margin-bottom:1.25rem">Gerado em ${new Date().toLocaleString('pt-BR')}</p>
+    <div style="background:#f5f0e8;padding:0.75rem 1rem;border-radius:6px;margin-bottom:1.25rem">
+      <p class="small"><strong>Nota importante:</strong> Este relatório é gerado a partir de autoavaliações feitas pela própria pessoa, com base em sinais observáveis. Não constitui diagnóstico. É um apoio para a conversa com o profissional responsável.</p>
+    </div>
+    ${intro ? `<h3>Mensagem</h3><p style="margin-bottom:1.25rem;font-style:italic">${intro}</p>` : ''}
+    <h3>Período e resumo</h3>
+    <p><strong>Período:</strong> ${period.label}</p>
+    <p><strong>Total de avaliações incluídas:</strong> ${included.length}</p>
+    <table style="margin-top:0.75rem;width:100%;border-collapse:collapse;font-size:0.9rem">
+      <thead><tr style="border-bottom:2px solid #e8e1d3">
+        <th style="text-align:left;padding:0.4rem 0.5rem">Estado</th>
+        <th style="text-align:center;padding:0.4rem 0.5rem">Acima do limiar</th>
+        <th style="text-align:center;padding:0.4rem 0.5rem">De</th>
+      </tr></thead>
+      <tbody>
+        ${['sensorial','ansiedade','depressao'].map(s => `
+          <tr style="border-bottom:1px solid #e8e1d3">
+            <td style="padding:0.4rem 0.5rem">${STATE_LABELS[s]}</td>
+            <td style="text-align:center;padding:0.4rem 0.5rem;font-weight:700">${stateCounts[s]}</td>
+            <td style="text-align:center;padding:0.4rem 0.5rem">${included.length} avaliações</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+    <h3 style="margin-top:1.5rem">Detalhamento cronológico</h3>`;
+
+  included.forEach(entry => {
+    const active = getActiveStates(entry.scores||{});
+    html += `<div class="report-entry">
+      <p><strong>${formatDate(entry.timestamp)}</strong></p>`;
+    if (active.length === 0) {
+      html += '<p class="small dimmed">Nenhum estado acima do limiar nesta avaliação.</p>';
+    }
+    active.forEach(s => {
+      const diffId = getDiffId(s);
+      const yesItems = QUESTIONS.filter(q => q.state === s && entry.answers?.[q.id] === 'sim');
+      html += `<div style="margin-top:0.6rem;margin-left:0.5rem">
+        <p style="font-weight:700;color:${STATE_COLORS[s]}">${STATE_LABELS[s]} — ${entry.scores?.[s]||0}/6 pontos</p>
+        <ul style="margin-top:0.3rem;padding-left:1.25rem;font-size:0.9rem">
+          ${yesItems.map(q => `<li style="margin-bottom:0.2rem">${q.id === diffId ? '<strong>[item diferenciador] </strong>' : ''}${q.text}</li>`).join('')}
+        </ul>
+      </div>`;
+    });
+    if (entry.note) html += `<p class="small italic" style="margin-top:0.6rem">Nota: "${entry.note}"</p>`;
+    html += '</div>';
+  });
+
+  html += '</div>';
+  return html;
+}
+
+function printReport() {
+  const intro = document.getElementById('report-intro');
+  if (intro) appState.reportIntro = intro.value;
+  const content = buildReportHTML();
+  const printSection = document.getElementById('print-section');
+  printSection.innerHTML = content;
+  printSection.classList.remove('hidden');
+  window.print();
+  setTimeout(() => { printSection.innerHTML = ''; printSection.classList.add('hidden'); }, 1000);
+}
+
+function copyReportText() {
+  const intro = document.getElementById('report-intro');
+  if (intro) appState.reportIntro = intro.value;
+
+  const history = loadHistory();
+  const PERIODS = [
+    { label:'Últimos 7 dias', days:7 },
+    { label:'Últimos 30 dias', days:30 },
+    { label:'Todo o histórico', days:null },
+  ];
+  const pIdx = appState.reportPeriodIdx ?? 1;
+  const period = PERIODS[pIdx];
+  const cutoff = period.days ? Date.now() - period.days * 86400000 : 0;
+  const filtered = history.filter(e => !period.days || new Date(e.timestamp).getTime() > cutoff);
+  const included = filtered.filter(e => appState.reportSelected[e.id]);
+
+  const lines = [
+    'RELATÓRIO — BÚSSOLA INTERNA',
+    '',
+    'NOTA: Este relatório é gerado a partir de autoavaliações feitas pela própria pessoa, com base em sinais observáveis. Não constitui diagnóstico. É um apoio para a conversa com o profissional responsável.',
+    '',
+  ];
+  if (appState.reportIntro) { lines.push('MENSAGEM:', appState.reportIntro, ''); }
+  lines.push(`Período: ${period.label}`, `Total: ${included.length} avaliações`, '');
+  lines.push('RESUMO:');
+  ['sensorial','ansiedade','depressao'].forEach(s => {
+    const count = included.filter(e => (e.scores?.[s]||0) >= THRESHOLD).length;
+    lines.push(`  ${STATE_LABELS[s]}: presente em ${count} de ${included.length} avaliações`);
+  });
+  lines.push('', 'DETALHAMENTO:');
+  included.forEach(entry => {
+    lines.push('---', formatDate(entry.timestamp));
+    const active = getActiveStates(entry.scores||{});
+    active.forEach(s => {
+      lines.push(`  ${STATE_LABELS[s]}: ${entry.scores?.[s]||0}/6`);
+      QUESTIONS.filter(q => q.state === s && entry.answers?.[q.id] === 'sim').forEach(q => {
+        lines.push(`    • ${q.id === getDiffId(s) ? '[diferenciador] ' : ''}${q.text}`);
+      });
+    });
+    if (entry.note) lines.push(`  Nota: "${entry.note}"`);
+  });
+
+  navigator.clipboard.writeText(lines.join('\n'))
+    .then(() => alert('Texto copiado para a área de transferência.'))
+    .catch(() => alert('Não foi possível copiar. Tente usar "Visualizar relatório" e copiar manualmente.'));
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+navigate('home');
+</script>
+</body>
+</html>
