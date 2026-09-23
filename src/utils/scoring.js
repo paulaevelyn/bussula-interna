@@ -5,11 +5,13 @@ export function computeScores(answers) {
     [STATES.SENSORIAL]: 0,
     [STATES.ANSIEDADE]: 0,
     [STATES.DEPRESSAO]: 0,
+    [STATES.INERCIA]: 0,
   };
   for (const [qId, answer] of Object.entries(answers)) {
     const state = qId[0] === 's' ? STATES.SENSORIAL
       : qId[0] === 'a' ? STATES.ANSIEDADE
-      : STATES.DEPRESSAO;
+      : qId[0] === 'd' ? STATES.DEPRESSAO
+      : STATES.INERCIA;
     scores[state] += ANSWER_VALUES[answer] ?? 0;
   }
   return scores;
@@ -24,7 +26,8 @@ export function getActiveStates(scores) {
 
 export function getDiffAnswer(answers, state) {
   const key = state === STATES.SENSORIAL ? 's6'
-    : state === STATES.ANSIEDADE ? 'a6' : 'd6';
+    : state === STATES.ANSIEDADE ? 'a6'
+    : state === STATES.DEPRESSAO ? 'd6' : 'i6';
   return answers[key];
 }
 
