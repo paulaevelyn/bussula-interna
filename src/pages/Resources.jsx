@@ -6,6 +6,7 @@ const TABS = [
   { id: STATES.SENSORIAL },
   { id: STATES.ANSIEDADE },
   { id: STATES.DEPRESSAO },
+  { id: STATES.INERCIA },
   { id: 'diferenciar' },
 ];
 
@@ -66,7 +67,7 @@ function DifferentiationTab() {
     <div>
       <h2 style={{ marginBottom: '0.5rem' }}>Como diferenciar os estados</h2>
       <p style={{ marginBottom: '1.5rem', color: 'var(--grafite)', lineHeight: 1.7 }}>
-        Às vezes é difícil saber o que está acontecendo — os três estados podem se parecer por fora. Essas perguntas ajudam a distinguir.
+        Às vezes é difícil saber o que está acontecendo — os quatro estados podem se parecer por fora. Essas perguntas ajudam a distinguir.
       </p>
 
       {DIFFERENTIATION.map((item, i) => (
@@ -121,6 +122,7 @@ export default function Resources({ highlightStates = [] }) {
     { id: STATES.SENSORIAL, label: STATE_META.sensorial.label, color: STATE_META.sensorial.color },
     { id: STATES.ANSIEDADE, label: STATE_META.ansiedade.label, color: STATE_META.ansiedade.color },
     { id: STATES.DEPRESSAO, label: STATE_META.depressao.label, color: STATE_META.depressao.color },
+    { id: STATES.INERCIA, label: STATE_META.inercia.label, color: STATE_META.inercia.color },
     { id: 'diferenciar', label: 'Como diferenciar', color: 'var(--grafite)' },
   ];
 
