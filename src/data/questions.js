@@ -2,6 +2,7 @@ export const STATES = {
   SENSORIAL: 'sensorial',
   ANSIEDADE: 'ansiedade',
   DEPRESSAO: 'depressao',
+  INERCIA: 'inercia',
 };
 
 // How each state is described as an *experience*, not a diagnosis
@@ -29,6 +30,14 @@ export const STATE_META = {
     colorLight: '#e4efec',
     badgeClass: 'badge-d',
     fillClass: 'fill-d',
+  },
+  inercia: {
+    label: 'Inércia de tarefas',
+    tagline: 'Você sabe o que fazer e até quer fazer — mas o corpo não sai do lugar.',
+    color: '#4A6B84',
+    colorLight: '#e6edf1',
+    badgeClass: 'badge-i',
+    fillClass: 'fill-i',
   },
 };
 
@@ -59,10 +68,19 @@ const depressaoQ = [
   { id: 'd6', state: STATES.DEPRESSAO, diff: true,  note: 'Estas perguntas se referem às últimas 2 a 4 semanas, não a hoje.', text: 'Essa queda não melhorou com uma noite de sono boa, um fim de semana de descanso, ou a remoção de um único estímulo.' },
 ];
 
-// Intercalated: S, A, D, S, A, D ...
+const inerciaQ = [
+  { id: 'i1', state: STATES.INERCIA, diff: false, text: 'Fiquei "travada(o)" para começar uma tarefa simples, mesmo sabendo exatamente o que fazer e querendo fazer.' },
+  { id: 'i2', state: STATES.INERCIA, diff: false, text: 'Consegui fazer outras coisas nesse mesmo período — só não essa tarefa específica.' },
+  { id: 'i3', state: STATES.INERCIA, diff: false, text: 'Tentei começar várias vezes e não consegui dar o primeiro passo, mesmo sem sentir medo ou tensão em relação à tarefa.' },
+  { id: 'i4', state: STATES.INERCIA, diff: false, text: 'Precisei da presença de outra pessoa (mesmo em silêncio) ou de algum estímulo externo para conseguir começar.' },
+  { id: 'i5', state: STATES.INERCIA, diff: false, text: 'Uma vez que consegui começar, segui sem muita dificuldade — o difícil foi só a largada.' },
+  { id: 'i6', state: STATES.INERCIA, diff: true,  text: 'Esse bloqueio aconteceu mesmo sem nenhum pensamento de medo, fracasso ou julgamento associado à tarefa.' },
+];
+
+// Intercalated: S, A, D, I, S, A, D, I ...
 export const questions = [];
 for (let i = 0; i < 6; i++) {
-  questions.push(sensorialQ[i], ansiedadeQ[i], depressaoQ[i]);
+  questions.push(sensorialQ[i], ansiedadeQ[i], depressaoQ[i], inerciaQ[i]);
 }
 
 export const ANSWER_VALUES = { sim: 1, nao: 0, incerto: 0.5 };
