@@ -315,6 +315,7 @@ p { font-size: 1rem; color: var(--grafite-light); }
 .badge-sensorial { background: #fde8d0; color: #a0521a; }
 .badge-ansiedade { background: #e8e4f5; color: #5040a0; }
 .badge-depressao { background: #d8eae6; color: #2d6b60; }
+.badge-inercia { background: #e6edf1; color: #38546a; }
 
 /* ── Result cards ── */
 .result-state {
@@ -325,6 +326,7 @@ p { font-size: 1rem; color: var(--grafite-light); }
 .result-state.sensorial { border-color: #e07a30; }
 .result-state.ansiedade { border-color: #7060c0; }
 .result-state.depressao { border-color: var(--verde); }
+.result-state.inercia { border-color: #4A6B84; }
 
 .score-row {
   display: flex;
@@ -350,6 +352,7 @@ p { font-size: 1rem; color: var(--grafite-light); }
 .fill-sensorial { background: #e07a30; }
 .fill-ansiedade { background: #7060c0; }
 .fill-depressao { background: var(--verde); }
+.fill-inercia { background: #4A6B84; }
 
 /* ── Resource cards ── */
 .resource-section {
