@@ -40,6 +40,19 @@ export const RESOURCES = {
     note: 'Se os sinais persistirem por mais de algumas semanas, ou vierem acompanhados de desesperança intensa, é importante conversar com um profissional. CVV: 188 (gratuito, 24h) · cvv.org.br',
     howToRecognize: 'Você sabe que é esgotamento (e não só um dia ruim) quando a queda não melhora com uma boa noite de sono, um fim de semana de descanso, ou a remoção de um único estímulo. A duração e a consistência são o sinal.',
   },
+
+  inercia: {
+    primaryAction: 'Reduza o primeiro passo — não a tarefa inteira',
+    whyItWorks: 'Na inércia de tarefas, a dificuldade não é decidir o que fazer, nem falta de capacidade — é o disparo entre a intenção e a ação. Motivação e força de vontade não resolvem, porque o problema não é de vontade. O que ajuda é encurtar a distância entre "eu quero" e "eu comecei".',
+    steps: [
+      { label: 'Quebre o primeiro passo ao mínimo possível', body: 'Não "escrever o relatório": "abrir o arquivo". O passo deve parecer pequeno demais para falhar.' },
+      { label: 'Peça companhia, mesmo em silêncio', body: 'Fazer a tarefa perto de alguém, ou em uma chamada de vídeo, costuma destravar a iniciação sem que você precise entender o motivo.' },
+      { label: 'Use um sinal de transição', body: 'Um som, uma frase ou um objeto específico que marque "agora entramos nesse modo" reduz o atrito de trocar de estado.' },
+      { label: 'Deixe o ambiente pronto com antecedência', body: 'Prepare os materiais e o espaço antes, para que não faltem decisões no momento de começar.' },
+    ],
+    note: 'Discurso motivacional ("é só se esforçar mais") tende a piorar, porque o bloqueio não é de caráter nem de vontade.',
+    howToRecognize: 'Você sabe que é inércia (e não sistema em alerta) quando não há medo, julgamento ou cenário de fracasso associado à tarefa — só a dificuldade de sair do lugar. E quando, uma vez iniciada, a tarefa flui normalmente.',
+  },
 };
 
 // Differentiation guide — shown in a dedicated "Aprenda a diferenciar" section
@@ -61,5 +74,11 @@ export const DIFFERENTIATION = [
     sim: { state: 'ansiedade', label: 'Mais provável: sistema em alerta' },
     nao: { state: 'sensorial', label: 'Mais provável: sobrecarga sensorial' },
     note: 'No alerta/ansiedade, o problema está dentro — não no ambiente.',
+  },
+  {
+    question: 'Ao pensar na tarefa, vem junto algum medo, julgamento ou cenário de fracasso?',
+    sim: { state: 'ansiedade', label: 'Mais provável: sistema em alerta' },
+    nao: { state: 'inercia', label: 'Mais provável: inércia de tarefas' },
+    note: 'Evitar por medo é sistema em alerta. Travar sem medo associado, mesmo querendo fazer, é inércia de tarefas.',
   },
 ];
