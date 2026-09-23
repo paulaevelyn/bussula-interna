@@ -15,7 +15,7 @@ export default function Home({ onStart, onGoResources }) {
               Para muitas pessoas neurodivergentes, sentir o próprio estado interno não é simples. Em vez de perguntar "como você se sente", o app pergunta sobre <strong>o que aconteceu</strong>: no seu corpo, no seu comportamento, no seu contexto.
             </p>
             <p style={{ marginBottom: '0.75rem' }}>
-              Com base nas suas respostas, o app aponta qual dos três estados parece estar presente — <strong>sobrecarga sensorial</strong>, <strong>sistema em alerta</strong> ou <strong>esgotamento</strong> — e mostra o que você pode fazer agora com cada um deles.
+              Com base nas suas respostas, o app aponta qual dos quatro estados parece estar presente — <strong>sobrecarga sensorial</strong>, <strong>sistema em alerta</strong>, <strong>esgotamento</strong> ou <strong>inércia de tarefas</strong> — e mostra o que você pode fazer agora com cada um deles.
             </p>
             <p>
               Com o tempo, você aprende a reconhecer esses estados pelos seus próprios sinais, sem precisar do app.
