@@ -114,6 +114,7 @@ function StateCard({ state, score, answers, defaultOpen }) {
               {state === 'sensorial' && 'O sinal que mais pesou: o desconforto aliviou quando você mudou o ambiente — isso é o sinal mais claro de sobrecarga sensorial.'}
               {state === 'ansiedade' && 'O sinal que mais pesou: o desconforto continuou mesmo em silêncio, sem estímulo externo — isso é o que diferencia o alerta da sobrecarga.'}
               {state === 'depressao' && 'O sinal que mais pesou: a queda de energia não melhorou com descanso pontual — isso diferencia esgotamento de cansaço comum.'}
+              {state === 'inercia' && 'O sinal que mais pesou: o bloqueio aconteceu sem medo, julgamento ou cenário de fracasso associado — isso diferencia inércia de tarefas do sistema em alerta.'}
             </p>
           )}
 
@@ -137,7 +138,7 @@ export default function Result({ scores, answers, onRestart, onGoHistory }) {
   const [saved, setSaved] = useState(false);
 
   const activeStates = getActiveStates(scores);
-  const allStates = [STATES.SENSORIAL, STATES.ANSIEDADE, STATES.DEPRESSAO];
+  const allStates = [STATES.SENSORIAL, STATES.ANSIEDADE, STATES.DEPRESSAO, STATES.INERCIA];
 
   function handleSave() {
     saveEntry(createEntry({ scores, answers, note }));
