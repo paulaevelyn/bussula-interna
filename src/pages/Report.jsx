@@ -17,7 +17,7 @@ function filterByPeriod(history, days) {
 }
 
 function diffId(state) {
-  return state === STATES.SENSORIAL ? 's6' : state === STATES.ANSIEDADE ? 'a6' : 'd6';
+  return state === STATES.SENSORIAL ? 's6' : state === STATES.ANSIEDADE ? 'a6' : state === STATES.DEPRESSAO ? 'd6' : 'i6';
 }
 
 function buildPlainText(included, period, intro) {
