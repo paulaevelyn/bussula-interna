@@ -3,7 +3,7 @@ import { loadHistory, deleteEntry, clearHistory, formatDate } from '../utils/sto
 import { STATE_META, STATES, THRESHOLD } from '../data/questions.js';
 import { getActiveStates } from '../utils/scoring.js';
 
-const allStates = [STATES.SENSORIAL, STATES.ANSIEDADE, STATES.DEPRESSAO];
+const allStates = [STATES.SENSORIAL, STATES.ANSIEDADE, STATES.DEPRESSAO, STATES.INERCIA];
 
 function MiniChart({ history }) {
   if (history.length < 2) return null;
